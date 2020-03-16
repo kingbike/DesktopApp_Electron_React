@@ -18,6 +18,8 @@ export default function Home() {
   // const [show, setShow] = React.useState(false);
   const [lgShow, setLgShow] = React.useState(false);
   const [errorMsg, setMessage] = React.useState(undefined);
+  const [keyPath, setKeyPath] = React.useState(undefined);
+
 
   const modalBeforSubmit = (formInput) => {
       // console.log('test');
@@ -28,7 +30,9 @@ export default function Home() {
       // console.log('formInput.target.elements.formHorizontalEmail.value', formInput.target.elements.key-path.value);
       // console.log('formInput.target.elements.formHorizontalEmail.value', formInput.target.elements.formPlatform.value);
       console.log('formInput.target.elements.formHorizontalEmail.value', formInput.target.elements['key-path'].value);
-      const inputArray = [ 'key-path', 'platform' ] ;
+      const inputArray = [ 'key-path', 'platform', 'image-name', 'disk-format', 'visibility', 'be-used',
+      'file', 'description', 'image-storage-endpoint', 'image-endpoint', 'min-disk', 'min-ram', 'vdc-esin',
+      'image-source', 'os-type' ] ;
 
       const totalArray = inputArray.map(function(item, index, array){
         // console.log('formInput.target.elements[item]', formInput.target.elements[item]);
@@ -47,7 +51,7 @@ export default function Home() {
         console.log( element ) ;
         console.log( Object.keys(element).toString() ) ;
         const objectKey = Object.keys(element).toString() ;
-        const tmpCommand = '--' + objectKey + ' ' + element[objectKey] + ' ' ;
+        const tmpCommand = '--' + objectKey + ' "' + element[objectKey] + '" ' ;
         return prev + tmpCommand;
       }, ".\\ecc-image-importer.exe importer ");
 
@@ -121,12 +125,15 @@ export default function Home() {
       <Form onSubmit={ modalBeforSubmit }>
         <Form.Group as={Form.Row} controlId="key-path"
           inputRef={input => this.textInput = input}
-          value={'eemmaaiill'} onChange={ k => { console.log('k',k) ;setEmali(k) } } >
+          // onChange={ k => { console.log('k',k)  ;
+          // console.log('k.target.target.value', k.target.value) ;
+          // setKeyPath(k.target.value) } }
+          >
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
-            Key
+            key-path
           </Form.Label>
            <Col sm={10} style={{ paddingRight: '50px' }}>
-            <Form.Control type="text" placeholder="Key" />
+            <Form.Control type="file" placeholder="Key" /*value={keyPath}*/ />
           </Col>
         </Form.Group>
         <Form.Group as={Form.Row} controlId="image-name">
@@ -134,17 +141,9 @@ export default function Home() {
             image-name
           </Form.Label>
            <Col sm={10} style={{ paddingRight: '50px' }}>
-            <Form.Control type="text" placeholder="centos_5_32" />
+            <Form.Control type="text" placeholder="ex: centos_5_32" />
           </Col>
         </Form.Group>
-        {/* <Form.Group as={Form.Row} controlId="formPassword">
-          <Form.Label style={{ textAlign: 'right' }} column sm={2}>
-            Image Name
-          </Form.Label>
-           <Col sm={10} style={{ paddingRight: '50px' }}>
-            <Form.Control type="password" placeholder="Password" />
-          </Col>
-        </Form.Group> */}
         <Form.Group as={Form.Row} controlId="platform">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
             platform
@@ -156,7 +155,7 @@ export default function Home() {
             </Form.Control>
           </Col>
         </Form.Group>
-        <Form.Group as={Form.Row} controlId="formOsType">
+        <Form.Group as={Form.Row} controlId="os-type">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
             os-type
           </Form.Label>
@@ -164,9 +163,20 @@ export default function Home() {
             <Form.Control type="text" placeholder="centos_5_32" />
           </Col>
         </Form.Group>
-        <Form.Group as={Form.Row} controlId="formDiskFormat">
+        <Form.Group as={Form.Row} controlId="be-used">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
-            disk-format
+            be-used
+          </Form.Label>
+           <Col sm={10} style={{ paddingRight: '50px' }}>
+          <Form.Control as="select">
+              <option>instance</option>
+              <option>ebs</option>
+            </Form.Control>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Form.Row} controlId="disk-format">
+          <Form.Label style={{ textAlign: 'right' }} column sm={2}>
+          disk-format
           </Form.Label>
            <Col sm={10} style={{ paddingRight: '50px' }}>
           <Form.Control as="select">
@@ -176,7 +186,7 @@ export default function Home() {
             </Form.Control>
           </Col>
         </Form.Group>
-        <Form.Group as={Form.Row} controlId="formImageSource">
+        <Form.Group as={Form.Row} controlId="image-source">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
             image-source
           </Form.Label>
@@ -187,18 +197,18 @@ export default function Home() {
             </Form.Control>
           </Col>
         </Form.Group>
-        <Form.Group as={Form.Row} controlId="formImageSource">
+        <Form.Group as={Form.Row} controlId="visibility">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
           visibility
           </Form.Label>
            <Col sm={10} style={{ paddingRight: '50px' }}>
           <Form.Control as="select">
-              <option>Operation</option>
+              <option>PRIVATE</option>
               <option>PUBLIC</option>
             </Form.Control>
           </Col>
         </Form.Group>
-        <Form.Group as={Form.Row} controlId="formVdcEsin">
+        <Form.Group as={Form.Row} controlId="vdc-esin">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
             vdc-esin
           </Form.Label>
@@ -207,30 +217,30 @@ export default function Home() {
           </Col>
         </Form.Group>
 
-        <Form.Group as={Form.Row}  controlId="formMinDisk">
-          <Form.Label style={{ textAlign: 'right' }} column sm={2}>
-            min-disk
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="text" placeholder="30" />
+        <Form.Row>
+          <Col sm={6}>
+            <Form.Group as={Form.Row} controlId="min-disk" >
+              <Form.Label style={{ textAlign: 'right' }} column sm={4}>
+                min-disk
+              </Form.Label>
+              <Col sm={8}>
+                <Form.Control type="text" placeholder="30"/>
+              </Col>
+            </Form.Group>
           </Col>
-          <Form.Label style={{ textAlign: 'right' }} column sm={2}>
-            min-ram
-          </Form.Label>
-           <Col sm={4} style={{ paddingRight: '50px' }}>
-            <Form.Control type="text" placeholder="1024" />
+          <Col sm={6}>
+            <Form.Group as={Form.Row}  controlId="min-ram" >
+              <Form.Label style={{ textAlign: 'right' }} column sm={4}>
+                min-ram
+              </Form.Label>
+              <Col sm={8} style={{ paddingRight: '50px' }}>
+                <Form.Control type="text" placeholder="1024" />
+              </Col>
+            </Form.Group>
           </Col>
-        </Form.Group>
-        {/* <Form.Group controlId="formMinRam">
-          <Form.Label style={{ textAlign: 'right' }} column sm={2}>
-            min-ram
-          </Form.Label>
-           <Col sm={4} style={{ paddingRight: '50px' }}>
-            <Form.Control type="text" placeholder="1024" />
-          </Col>
-        </Form.Group> */}
+        </Form.Row>
 
-        <Form.Group as={Form.Row} controlId="formImageEndpoint">
+        <Form.Group as={Form.Row} controlId="image-endpoint">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
             image-endpoint
           </Form.Label>
@@ -238,14 +248,30 @@ export default function Home() {
             <Form.Control type="text" placeholder="https://10.144.225.186/u/image" />
           </Col>
         </Form.Group>
-        <Form.Group as={Form.Row} controlId="formStorageEndpoint">
+        <Form.Group as={Form.Row} controlId="image-storage-endpoint">
           <Form.Label style={{ textAlign: 'right' }} column sm={2}>
-            storage-endpoint
+            image-storage-endpoint
           </Form.Label>
            <Col sm={10} style={{ paddingRight: '50px' }}>
             <Form.Control type="text" placeholder="https://10.144.225.186/u/storage/imagestorage " />
           </Col>
         </Form.Group>
+        <Form.Group as={Form.Row} controlId="description">
+          <Form.Label style={{ textAlign: 'right' }} column sm={2}>
+          description
+          </Form.Label>
+           <Col sm={10} style={{ paddingRight: '50px' }}>
+            <Form.Control type="text" placeholder="description" />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Form.Row} controlId="file">
+          <Form.Label style={{ textAlign: 'right' }} column sm={2}>
+            file
+          </Form.Label>
+           <Col sm={10} style={{ paddingRight: '50px' }}>
+            <Form.Control type="file" placeholder="file" />
+          </Col>
+          </Form.Group>
         {/* <fieldset>
           <Form.Group as={Form.Row}>
             <Form.Label as="legend" column sm={2}>
