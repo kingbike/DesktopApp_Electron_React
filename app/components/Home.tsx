@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-console */
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -15,7 +16,6 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { exec } from 'child_process';
 import routes from '../constants/routes.json';
 
 export default function Home() {
@@ -93,31 +93,31 @@ export default function Home() {
       return obj;
     });
 
+    // case 1 : run in image-importer
     // eslint-disable-next-line no-console
-    console.log('totalArray', totalArray);
+    // console.log('totalArray', totalArray);
+    // const commandParamsString = `${totalArray.reduce(
+    //   (prev, element, currentIndex, arr) => {
+    //     // console.log(element);
+    //     // console.log(Object.keys(element).toString());
+    //     if (
+    //       Object.keys(element).toString() !== 'vdc-esin' &&
+    //       Object.keys(element).toString() !== 'region-id'
+    //     ) {
+    //       const objectKey = Object.keys(element).toString();
+    //       const tmpCommand = `--${objectKey} "${element[objectKey].trim()}" `;
+    //       return prev + tmpCommand;
+    //     }
+    //     const objectKey = Object.keys(element).toString();
+    //     const tmpCommand = `--${objectKey}=${element[objectKey].trim()} `;
+    //     return prev + tmpCommand;
+    //   },
+    //   '.\\ecc-image-importer import '
+    // )}--verbose`;
 
-    const commandParamsString = `${totalArray.reduce(
-      (prev, element, currentIndex, arr) => {
-        // console.log(element);
-        // console.log(Object.keys(element).toString());
-        if (
-          Object.keys(element).toString() !== 'vdc-esin' &&
-          Object.keys(element).toString() !== 'region-id'
-        ) {
-          const objectKey = Object.keys(element).toString();
-          const tmpCommand = `--${objectKey} "${element[objectKey].trim()}" `;
-          return prev + tmpCommand;
-        }
-        const objectKey = Object.keys(element).toString();
-        const tmpCommand = `--${objectKey}=${element[objectKey].trim()} `;
-        return prev + tmpCommand;
-      },
-      '.\\ecc-image-importer import '
-    )}--verbose`;
-
+    // case 2 : run in api
     // eslint-disable-next-line no-console
-    console.log('commandParamsString', commandParamsString);
-
+    // console.log('commandParamsString', commandParamsString);
     // axios.get(`https://hosenmassage.ddns.net/api/listEvent`)
     //   .then(res => {
     //     // const persons = res.data
@@ -127,13 +127,16 @@ export default function Home() {
     //     // this.setState({ persons });
     //   })
 
-    // const { exec } = require('child_process');
-    // const path = require('path');
-    // const rootPath = path.resolve(__dirname, '..');
-    // const nwDir = path.dirname(process.execPath);
-    // console.log('nwDirr', nwDir );  // electron-react-boilerplate\node_modules\electron\dist
-    // console.log('rootPath', rootPath ); //electron-react-boilerplate
-    // const command = 'calcj.exe';
+    // case 3 : run in caculator
+    // eslint-disable-next-line global-require
+    const { exec } = require('child_process');
+    // eslint-disable-next-line global-require
+    const path = require('path');
+    const rootPath = path.resolve(__dirname, '..');
+    const nwDir = path.dirname(process.execPath);
+    console.log('nwDirr', nwDir );  // electron-react-boilerplate\node_modules\electron\dist
+    console.log('rootPath', rootPath ); // electron-react-boilerplate
+    const commandParamsString = 'calc.exe';
 
     setLoading(true);
     setLgShow(true);
@@ -164,18 +167,6 @@ export default function Home() {
     formInput.preventDefault();
     formInput.stopPropagation();
   };
-
-  // onSelectChange = (field, cb) => (e) => {
-  //   field && this.setState({ [field]: e.target.value });
-  //   typeof cb === 'function' && cb(e);
-  // };
-
-  // return (
-  //   <div className={styles.container} data-tid="container">
-  //     <h2>Home</h2>
-  //     <Link to={routes.COUNTER}>to Counter</Link>
-  //   </div>
-  // );
 
   return (
     <div
